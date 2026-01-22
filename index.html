@@ -29,6 +29,25 @@
   rows="6"
   cols="40">
 </textarea>
+<script>
+  function saveThought() {
+    const text = document.getElementById("thought").value;
 
+    if (text.trim() === "") {
+      alert("كتب شي حاجة قبل ما تحفظ");
+      return;
+    }
+
+    localStorage.setItem("myThought", text);
+    alert("تحفظ 👍");
+  }
+
+  window.onload = function () {
+    const saved = localStorage.getItem("myThought");
+    if (saved) {
+      document.getElementById("thought").value = saved;
+    }
+  }
+</script>
 </body>
 </html>
