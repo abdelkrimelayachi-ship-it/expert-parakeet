@@ -1,151 +1,65 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Mirror | مرآة</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لعبتي الأولى</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial;
+            background: #111;
+            color: white;
+        }
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0b1d33;
-      color: #ffffff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
+        #gameArea {
+            width: 300px;
+            height: 300px;
+            margin: 20px auto;
+            background: #222;
+            position: relative;
+            border-radius: 10px;
+        }
 
-    .container {
-      width: 90%;
-      max-width: 520px;
-      background: #122a4d;
-      padding: 22px;
-      border-radius: 14px;
-      box-shadow: 0 0 25px rgba(0,0,0,0.5);
-    }
-
-    h1 {
-      text-align: center;
-      margin-bottom: 5px;
-    }
-
-    .question {
-      font-size: 17px;
-      margin: 15px 0;
-    }
-
-    textarea {
-      width: 100%;
-      height: 120px;
-      border-radius: 10px;
-      border: none;
-      padding: 12px;
-      font-size: 15px;
-      resize: none;
-    }
-
-    button {
-      width: 100%;
-      margin-top: 12px;
-      padding: 12px;
-      background: #1e90ff;
-      border: none;
-      border-radius: 10px;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #1c7ed6;
-    }
-
-    .status {
-      margin-top: 10px;
-      font-size: 14px;
-      color: #9be7ff;
-      text-align: center;
-    }
-
-    .counter {
-      text-align: center;
-      font-size: 13px;
-      opacity: 0.7;
-      margin-top: 5px;
-    }
-  </style>
+        #box {
+            width: 50px;
+            height: 50px;
+            background: red;
+            position: absolute;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 
 <body>
 
-<div class="container">
-  <h1>🪞 مرآة</h1>
+<h1>🎯 ضرب المربع</h1>
+<p>النقاط: <span id="score">0</span></p>
 
-  <div class="counter" id="counter"></div>
-
-  <div class="question" id="questionText"></div>
-
-  <textarea id="answer" placeholder="كتب جوابك بصدق..."></textarea>
-
-  <button onclick="saveAnswer()">حفظ الجواب</button>
-  <button onclick="nextQuestion()">السؤال التالي</button>
-
-  <div class="status" id="status"></div>
+<div id="gameArea">
+    <div id="box"></div>
 </div>
 
 <script>
-  const questions = [
-    "شنو أول حاجة مقلقاني دابا؟",
-    "علاش كنحس بالتعب حتى إلا ما درت والو؟",
-    "شنو الحاجة لي كنخاف نواجهها؟",
-    "شنو الحاجة لي كتضيع وقتي بزاف؟",
-    "واش أنا راضي على راسي؟ علاش؟",
-    "شنو القرار لي خاصني ناخدو ولكن كنأجلو؟",
-    "شنو الحاجة لي كتعطيني راحة نفسية؟",
-    "شنو أكثر فكرة كتجيني فبالليل؟",
-    "شنو كنتمنى نكون بعد عام؟",
-    "شنو أسوأ عادة خاصني نحبسها؟",
-    "شنو الحاجة لي كنفتخر بها؟",
-    "شنو لي محتاجو دابا أكثر: المال ولا الراحة؟",
-    "شنو كنحس ملي كنكون بوحدي؟",
-    "شنو الحاجة لي ما قلتها حتى لشي واحد؟",
-    "شنو أول خطوة نقدر ندير دابا؟"
-  ];
+    let box = document.getElementById("box");
+    let score = 0;
 
-  let index = Number(localStorage.getItem("mirror_index")) || 0;
-
-  const questionText = document.getElementById("questionText");
-  const answerInput = document.getElementById("answer");
-  const status = document.getElementById("status");
-  const counter = document.getElementById("counter");
-
-  function loadQuestion() {
-    questionText.innerText = questions[index];
-    counter.innerText = `سؤال ${index + 1} / ${questions.length}`;
-    const saved = localStorage.getItem("answer_" + index);
-    answerInput.value = saved ? saved : "";
-    status.innerText = "";
-  }
-
-  function saveAnswer() {
-    localStorage.setItem("answer_" + index, answerInput.value);
-    status.innerText = "✔ تم حفظ الجواب";
-  }
-
-  function nextQuestion() {
-    saveAnswer();
-    if (index < questions.length - 1) {
-      index++;
-      localStorage.setItem("mirror_index", index);
-      loadQuestion();
-    } else {
-      status.innerText = "✔ وصلتي لآخر سؤال";
+    function moveBox() {
+        let x = Math.random() * 250;
+        let y = Math.random() * 250;
+        box.style.left = x + "px";
+        box.style.top = y + "px";
     }
-  }
 
-  loadQuestion();
+    box.addEventListener("click", function () {
+        score++;
+        document.getElementById("score").innerText = score;
+        moveBox();
+    });
+
+    // يتحرك كل ثانية
+    setInterval(moveBox, 1000);
+
+    moveBox();
 </script>
 
 </body>
